@@ -1,0 +1,30 @@
+#!/bin/bash
+
+CUR="/home/ectf/ectf2025/"
+
+if [[ $# -ne 1 ]]; then
+  echo "Usage: $0 <filename_to_flash>"
+  exit 1
+fi
+
+BUILD_PATH=$1
+
+while true; do
+  python3 ${CUR}/CI/enable_update.py
+  uhubctl -l 1-1 -a cycle > /dev/null 2>/dev/null
+
+  while [ ! -d "/media/nhommes/DAPLINK" ]; do
+    echo "Waiting for USB to connect..."
+    sleep 1
+  done
+  python3 ${CUR}/CI/disable_update.py
+  echo "Done!"
+  python -m ectf25.utils.flash $BUILD_PATH /dev/ttyACM0
+  if [ "$?" -ne 26 ]; then
+    break
+  fi
+done
+sleep 1
+python -m ectf25.tv.list /dev/ttyACM0
+
+echo "Success!"
