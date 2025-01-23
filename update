@@ -12,7 +12,7 @@ CI_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 while true; do
   echo "Putting board in update mode"
   python3 ${CI_DIR}/enable_update.py
-  uhubctl -l 1-1 -a cycle > /dev/null 2>/dev/null
+  /usr/sbin/uhubctl -l 1-1 -a cycle > /dev/null 2>/dev/null
 
   echo -n "Waiting for USB to connect"
   while [ ! -e "/dev/disk/by-label/DAPLINK" ]; do
