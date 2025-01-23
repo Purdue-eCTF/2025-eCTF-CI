@@ -30,6 +30,11 @@ done
 
 sleep 1
 echo "Testing with list"
-python -m ectf25.tv.list /dev/ttyACM0
 
-echo "Success!"
+timeout 3s python -m ectf25.tv.list /dev/ttyACM0
+
+if [ "$?" -eq 124 ]; then
+  echo "Listing failed."
+else
+  echo "Success!"
+fi
