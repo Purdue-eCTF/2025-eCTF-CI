@@ -8,10 +8,10 @@ fi
 BUILD_PATH=$1
 # parent directory of update script
 CI_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-USB_RETRY_COUNT=0
 FLASH_RETRY_COUNT=0
 
 while true; do
+  USB_RETRY_COUNT=0
   if [ "$FLASH_RETRY_COUNT" -gt 5 ]; then
     echo "%%FAILED%%\nReason: Flash max retries exceeded"
     exit 47
@@ -22,7 +22,7 @@ while true; do
 
   echo -n "Waiting for USB to connect"
   while [ ! -e "/dev/disk/by-label/DAPLINK" ]; do
-    if [ "$USB_RETRY_COUNT" -gt  10 ]; then
+    if [ "$USB_RETRY_COUNT" -gt  20 ]; then
 	echo "%%FAILED%%\nReason: USB connection timeout"
 	exit 47
     fi
