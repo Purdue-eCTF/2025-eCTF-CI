@@ -10,3 +10,5 @@ Add attack test cases
  - Waiting on attack team
 Add subscription test cases
  - Waiting on working build server first
+Add test cases for functional / security requirements
+ - Waiting on working build server first
