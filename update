@@ -8,16 +8,27 @@ fi
 BUILD_PATH=$1
 # parent directory of update script
 CI_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+USB_RETRY_COUNT=0
+FLASH_RETRY_COUNT=0
 
 while true; do
+  if [ "$FLASH_RETRY_COUNT" -gt 5 ]; then
+    echo "%%FAILED%%\nReason: Flash max retries exceeded"
+    exit 47
+  fi
   echo "Putting board in update mode"
   python3 ${CI_DIR}/enable_update.py
   /usr/sbin/uhubctl -l 1-1 -a cycle > /dev/null 2>/dev/null
 
   echo -n "Waiting for USB to connect"
   while [ ! -e "/dev/disk/by-label/DAPLINK" ]; do
+    if [ "$USB_RETRY_COUNT" -gt  10 ]; then
+	echo "%%FAILED%%\nReason: USB connection timeout"
+	exit 47
+    fi
     echo -n "."
     sleep 1
+    ((USB_RETRY_COUNT++))
   done
   python3 ${CI_DIR}/disable_update.py
   echo -e "\nDone!\nFlashing"
@@ -26,6 +37,7 @@ while true; do
   if [ "$?" -ne 26 ]; then
     break
   fi
+  ((FLASH_RETRY_COUNT++))
 done
 
 sleep 1
@@ -34,7 +46,8 @@ echo "Testing with list"
 timeout 3s python -m ectf25.tv.list /dev/ttyACM0
 
 if [ "$?" -eq 124 ]; then
-  echo "Listing failed."
+  echo "%%FAILED%%\nReason: Listing failed."
+  exit 47
 else
   echo "Success!"
 fi
