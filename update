@@ -45,7 +45,7 @@ echo "Testing with list"
 
 timeout 3s python -m ectf25.tv.list /dev/ttyACM0
 
-if [ "$?" -eq 124 ]; then
+if [ "$?" -ne 0 ]; then
   echo "%%FAILED%%\nReason: Listing failed."
   exit 47
 else
