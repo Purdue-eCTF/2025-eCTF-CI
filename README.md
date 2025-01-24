@@ -2,4 +2,11 @@
 
 Replace flash.py with the modified version from this repo. (remember to pip install again!)
 
-Change update to match your usbs, files and usb hub.
+After cloning please rename this directory to `~/ectf2025/CI`, and create the folder `~/ectf2025/build_out`
+
+## TODO:
+
+Add attack test cases
+ - Waiting on attack team
+Add subscription test cases
+ - Waiting on working build server first
