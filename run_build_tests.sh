@@ -6,8 +6,6 @@ C_MEDIUMPURPLE1="\033[38;5;141m"
 C_RED="\033[38;5;9m"
 C_GREEN="\033[38;5;2m"
 
-export TEST_BUILD_DIR=$1
-
 for test in tests/build/*.sh; do
     if [[ $test == tests/build/x-*.sh ]]; then
         continue
