@@ -6,6 +6,7 @@ C_MEDIUMPURPLE1="\033[38;5;141m"
 C_RED="\033[38;5;9m"
 C_GREEN="\033[38;5;2m"
 
+cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
 . ../.venv/bin/activate
 pip install -e ../test_out/design/
 
