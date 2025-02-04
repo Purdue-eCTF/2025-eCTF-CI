@@ -20,8 +20,13 @@ from loguru import logger
 def main():
 	# Define and parse command line arguments
 	parser = argparse.ArgumentParser(
-		prog="ectf25.tv.list",
-		description="List the channels with a valid subscription on the Decoder",
+		prog="ectf25.tv.subscribe",
+		description="Subscribe a Decoder to a new subscription",
+	)
+	parser.add_argument(
+		"subscription_file",
+		type=argparse.FileType("rb"),
+		help="Path to the subscription file created by ectf25_design.gen_subscription",
 	)
 	parser.add_argument(
 		"port",
@@ -29,22 +34,21 @@ def main():
 	)
 	args = parser.parse_args()
 
+	# Read subscription file
+	subscription = args.subscription_file.read()
+
 	# Open Decoder interface
 	decoder = DecoderIntf(args.port)
 
-	# Run the list command
+	# Run subscribe command
 	start = time.perf_counter()
-	subscriptions = decoder.list()
+	decoder.subscribe(subscription)
 	end = time.perf_counter()
 
-	# Print the results
-	for channel, start, end in subscriptions:
-		logger.info(f"Found subscription: Channel {channel} {start}:{end}")
-
 	if end - start < 0.5:
-		logger.success("List successful")
+		logger.success("Subscribe successful")
 	else:
-		logger.error("List timed out")
+		logger.error("Subscribe timed out")
 		exit(1)
 
 

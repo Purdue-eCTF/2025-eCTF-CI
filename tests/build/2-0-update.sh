@@ -1,3 +1,3 @@
 #!/bin/bash
 
-timeout 0.5s python -m ectf25.tv.subscribe ../test_out/subscription.bin /dev/ttyACM0 || exit $?
+timeout 2s python modified_subscribe.py ../test_out/subscription.bin /dev/ttyACM0 || exit $?
