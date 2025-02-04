@@ -1,5 +1,4 @@
 #!/bin/bash
-cd ../test_out || exit 1
 # todo bad file
 
 echo "TODO: 3-1-update-invalid-should-fail.sh"
