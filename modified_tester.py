@@ -249,7 +249,8 @@ def main():
 				encoded_frame = encoder.encode(channel, raw_frame, timestamp)
 				encoder_total_time += time.perf_counter() - start
 
-			logger.debug(f"ENC OUT {repr(encoded_frame)}")
+			if not args.stub_encoder:
+				logger.debug(f"ENC OUT {repr(encoded_frame)}")
 			encoded_frames.append((
 				channel,
 				encoded_frame.decode("latin-1"),
@@ -274,7 +275,8 @@ def main():
 				logger.error(f"Decode frame {repr(raw_frame)} != {repr(decoded_frame)}")
 			"""
 
-			logger.info(f"DEC OUT {repr(decoded_frame)}")
+			if not args.stub_decoder:
+				logger.info(f"DEC OUT {repr(decoded_frame)}")
 			decoded_frames.append((
 				channel,
 				decoded_frame.decode("latin-1"),
