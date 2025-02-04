@@ -135,6 +135,11 @@ def parse_args():
 	)
 	parser.add_argument("--perf", action="store_true", help="Display performance stats")
 	parser.add_argument(
+		"--timing",
+		action="store_true",
+		help="Error if not meeting timing requirements for encode and decode",
+	)
+	parser.add_argument(
 		"--stub-encoder",
 		action="store_true",
 		help="Stub out encoder and pass frames directly to decoder",
@@ -222,8 +227,8 @@ def main():
 
 	# performance stats
 	nbytes = 0
-	encoder_time = 0
-	decoder_time = 0
+	encoder_total_time = 0
+	decoder_total_time = 0
 
 	try:
 		# get frames from generator
@@ -242,7 +247,7 @@ def main():
 			else:
 				start = time.perf_counter()
 				encoded_frame = encoder.encode(channel, raw_frame, timestamp)
-				encoder_time += time.perf_counter() - start
+				encoder_total_time += time.perf_counter() - start
 
 			logger.debug(f"ENC OUT {repr(encoded_frame)}")
 			encoded_frames.append((
@@ -257,7 +262,11 @@ def main():
 			else:
 				start = time.perf_counter()
 				decoded_frame = decoder.decode(encoded_frame)
-				decoder_time += time.perf_counter() - start
+				decoder_time = time.perf_counter() - start
+				if args.timing and decoder_time > 0.150:
+					logger.error("Decode took longer than 150ms")
+					return
+				decoder_total_time += decoder_time
 
 			# warn if frame doesn't match
 			"""
@@ -274,8 +283,12 @@ def main():
 
 			# print performance stats if requested
 			if args.perf:
-				encoder_avg = "N/A" if args.stub_encoder else int(nbytes / encoder_time)
-				decoder_avg = "N/A" if args.stub_decoder else int(nbytes / decoder_time)
+				encoder_avg = (
+					"N/A" if args.stub_encoder else int(nbytes / encoder_total_time)
+				)
+				decoder_avg = (
+					"N/A" if args.stub_decoder else int(nbytes / decoder_total_time)
+				)
 				logger.info(
 					f"STATS: encoder {encoder_avg} B/s, decoder {decoder_avg} B/s"
 				)

@@ -24,7 +24,11 @@ for test in tests/build/*.sh; do
         fi
     else
         if [ $result -ne 0 ]; then
-            echo -e "${C_RED}${F_BOLD}Test $test failed${NO_FORMAT}"
+            if [ $result -eq 124 ]; then 
+                echo -e "${C_RED}${F_BOLD}Test $test failed becuase it timed out${NO_FORMAT}"
+            else 
+                echo -e "${C_RED}${F_BOLD}Test $test failed${NO_FORMAT}"
+            fi
             exit 1
         fi
     fi
