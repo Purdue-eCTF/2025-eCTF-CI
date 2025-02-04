@@ -265,7 +265,7 @@ def main():
 				decoder_time = time.perf_counter() - start
 				if args.timing and decoder_time > 0.150:
 					logger.error("Decode took longer than 150ms")
-					return
+					exit(1)
 				decoder_total_time += decoder_time
 
 			# warn if frame doesn't match
