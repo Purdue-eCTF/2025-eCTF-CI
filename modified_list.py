@@ -33,18 +33,18 @@ def main():
 	decoder = DecoderIntf(args.port)
 
 	# Run the list command
-	start = time.perf_counter()
+	start_time = time.perf_counter()
 	subscriptions = decoder.list()
-	end = time.perf_counter()
+	end_time = time.perf_counter()
 
 	# Print the results
 	for channel, start, end in subscriptions:
 		logger.info(f"Found subscription: Channel {channel} {start}:{end}")
 
-	if end - start < 0.5:
+	if end_time - start_time < 0.5:
 		logger.success("List successful")
 	else:
-		logger.error(f"List timed out: {end - start}s")
+		logger.error(f"List timed out: {end_time - start_time}s")
 		exit(1)
 
 
