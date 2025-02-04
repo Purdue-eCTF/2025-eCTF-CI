@@ -6,6 +6,10 @@ C_MEDIUMPURPLE1="\033[38;5;141m"
 C_RED="\033[38;5;9m"
 C_GREEN="\033[38;5;2m"
 
+. ./.venv/bin/activate
+pip install ./test_out/tools/
+pip install -e ./test_out/design/
+
 for test in tests/build/*.sh; do
     if [[ $test == tests/build/x-*.sh ]]; then
         continue

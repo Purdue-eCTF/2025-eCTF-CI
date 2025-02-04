@@ -1,4 +1,4 @@
-
+#!/bin/bash
 # todo either input encoded frames + output or run encoder on rpi
 
 echo "TODO: 1-1-decode.sh"
