@@ -1,3 +1,5 @@
+#!/bin/bash
+cd ../test_out || exit 1
 
 # todo encoded frame with invalid channel
 

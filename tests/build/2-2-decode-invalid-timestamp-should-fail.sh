@@ -1,4 +1,5 @@
-
+#!/bin/bash
+cd ../test_out || exit 1
 # todo encoded frame with invalid timestamps (non-increasing)
 
 echo "TODO: 2-2-decode-invalid-timestamp-should-fail"

@@ -1,3 +1,5 @@
+#!/bin/bash
+cd ../test_out || exit 1
 # todo add file subscription gen file
 
 echo "TODO: 3-0-update.sh"

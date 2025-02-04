@@ -1,6 +1,5 @@
 #!/bin/bash
-timeout 0.5s python -m ectf25.tv.list /dev/ttyACM0
+cd ../test_out || exit 1
+timeout 0.5s python -m ectf25.tv.list /dev/ttyACM0 || exit 1
 
-if [ "$?" -ne 0 ]; then
-  exit 1
-fi
+# TODO check output

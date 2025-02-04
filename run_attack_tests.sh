@@ -11,7 +11,7 @@ for test in tests/attack/*.sh; do
         continue
     fi
     echo -e "${C_MEDIUMPURPLE1}${F_BOLD}Running test $test${NO_FORMAT}"
-    sh $test &2>1 | tee temp_output
+    bash "$test" 2>&1 | tee temp_output
     grep -aEo "ectf\{[a-zA-Z0-9_]+\}" temp_output | sed "s/^/POTENTIAL FLAG: /"
 done
 

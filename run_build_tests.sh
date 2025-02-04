@@ -15,7 +15,7 @@ for test in tests/build/*.sh; do
         continue
     fi
     echo -e "${C_MEDIUMPURPLE1}${F_BOLD}Running test $test${NO_FORMAT}"
-    sh $test
+    bash "$test"
     result=$?
     if [[ $test == *-should-fail.sh ]]; then
         if [ $result -eq 0 ]; then
