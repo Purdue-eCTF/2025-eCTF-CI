@@ -238,7 +238,6 @@ def main():
 			# encode frame or use raw frame if encoder stubbed out
 			if args.stub_encoder:
 				encoded_frame = raw_frame
-				logger.warning("Encoder stubbed out. Using raw frame")
 			else:
 				start = time.perf_counter()
 				encoded_frame = encoder.encode(channel, raw_frame, timestamp)
@@ -254,7 +253,6 @@ def main():
 			# decode frame or use encoded frame if decoder stubbed out
 			if args.stub_decoder:
 				decoded_frame = encoded_frame
-				logger.warning("Decoder stubbed out. Using encoded frame")
 			else:
 				start = time.perf_counter()
 				decoded_frame = decoder.decode(encoded_frame)
