@@ -48,7 +48,7 @@ def main():
 	if end - start < 0.5:
 		logger.success("Subscribe successful")
 	else:
-		logger.error("Subscribe timed out")
+		logger.error(f"Subscribe timed out: {end - start}s")
 		exit(1)
 
 

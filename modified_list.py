@@ -44,7 +44,7 @@ def main():
 	if end - start < 0.5:
 		logger.success("List successful")
 	else:
-		logger.error("List timed out")
+		logger.error(f"List timed out: {end - start}s")
 		exit(1)
 
 
