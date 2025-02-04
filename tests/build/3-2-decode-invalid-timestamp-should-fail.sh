@@ -1,8 +1,7 @@
 #!/bin/bash
+# todo encoded frame with invalid timestamps (non-increasing)
 
-# todo encoded frame with invalid channel
-
-echo "TODO: 2-1-decode-invalid-channel-should-fail"
+echo "TODO: 3-2-decode-invalid-timestamp-should-fail"
 
 # timeout 5s python -m ectf25.utils.tester --secrets TODO --stub-encoder --num-frames 20 --port /dev/ttyACM0 --dump-decoded decoded_frames rand
 

@@ -203,7 +203,8 @@ def parse_args():
 	args = parser.parse_args()
 
 	if args.port is None and not args.stub_decoder:
-		exit("--port must be provided if not using --stub-decoder")
+		print("--port must be provided if not using --stub-decoder")
+		exit(1)
 	return args
 
 
@@ -280,7 +281,8 @@ def main():
 				)
 
 			# sleep if requested
-			time.sleep(args.delay)
+			if args.delay:
+				time.sleep(args.delay)
 	finally:
 		# dump frames
 		if args.dump_raw:
