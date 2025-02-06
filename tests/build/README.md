@@ -16,4 +16,4 @@ test case 3: errors
 -   3.2: decode invalid timestamp
 -   3.3: decode invalid channel
 
-TODO `python -m ectf25.utils.stress_test --test-size 1000000 encode --dump test_out/stress_test_encoded_frames.json secrets/secrets.json`
+TODO `python -m ectf25.utils.stress_test --test-size 1000000 encode --dump test_out/stress_test_encoded_frames.json global.secrets`
