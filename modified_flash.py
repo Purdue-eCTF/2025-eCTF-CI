@@ -11,8 +11,8 @@ Copyright: Copyright (c) 2025 The MITRE Corporation
 """
 
 import argparse
-import serial
 
+import serial
 from loguru import logger
 from tqdm import trange
 
@@ -49,7 +49,7 @@ class BootloaderIntf:
         """Get and check the response code"""
         retry_count = 0
         while (resp := self.ser.read(1)) == b"":
-            if (retry_count >= 500000): # max retries
+            if retry_count >= 500000:  # max retries
                 print("Bruh momentus... retrying")
                 exit(26)
             retry_count += 1
@@ -80,7 +80,7 @@ class BootloaderIntf:
         # Send image and verify each block
         logger.info("Update started")
         logger.info("Sending image data...")
-        for idx in trange(0, self.TOTAL_SIZE, self.BLOCK_SIZE):
+        for idx in trange(0, len(image), self.BLOCK_SIZE):
             self.ser.write(image[idx : idx + self.BLOCK_SIZE])
             self._verify_resp()
 
