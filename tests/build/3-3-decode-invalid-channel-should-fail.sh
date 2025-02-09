@@ -2,11 +2,7 @@
 
 # todo encoded frame with invalid channel
 
-echo "TODO: 3-3-decode-invalid-channel-should-fail"
-exit 1
-
-# timeout 5s python modified_tester.py --secrets TODO --stub-encoder --num-frames 20 --port /dev/ttyACM0 --dump-decoded decoded_frames rand
-
+timeout 5s python modified_tester.py --secrets ../test_out/global.secrets --timing --port /dev/ttyACM0 rand2 -s 40 -e 41 -c 2 || exit $?
 # if [ "$?" -ne 0 ]; then
 #   exit 1
 # fi

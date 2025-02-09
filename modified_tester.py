@@ -48,6 +48,28 @@ def rand_gen(args) -> Iterator[tuple[int, bytes, int]]:
         yield channel, frame, timestamp
 
 
+def rand_gen2(args) -> Iterator[tuple[int, bytes, int]]:
+    """Generate frames with random content for specified channels
+
+    Generate --num-frames if provided, otherwise generate forever
+    """
+    for idx in range(args.start_frame, args.end_frame):
+        # pick a random channel
+        channel: int = random.choice(args.channels)
+
+        # generate a random frame
+        if args.ascii:
+            frame = "".join(random.choices(string.printable, k=args.frame_size)).encode(
+                "latin-1"
+            )
+        else:
+            frame = random.randbytes(args.frame_size)
+
+        # use the time for a timestamp
+        timestamp = idx
+        yield channel, frame, timestamp
+
+
 def stdin_gen(_) -> Iterator[tuple[int, bytes, int]]:
     """Read newline separated frames from stdin
 
@@ -189,6 +211,41 @@ def parse_args():
         help="Channels to randomly chose from (NOTE: 0 is broadcast)",
     )
     parser_rand.add_argument(
+        "--frame-size", "-f", type=int, default=64, help="Size (in bytes) of frame"
+    )
+
+    # subparser and arguments for the random frame generator
+    parser_rand2 = subparsers.add_parser("rand2", help="Generate random frames")
+    parser_rand2.set_defaults(frame_generator=rand_gen2)
+    parser_rand2.add_argument(
+        "--ascii",
+        "-a",
+        action="store_true",
+        help="Only use ASCII-printable characters for frames",
+    )
+    parser_rand2.add_argument(
+        "--start-frame",
+        "-s",
+        type=int,
+        default=0,
+        help="Start frame",
+    )
+    parser_rand2.add_argument(
+        "--end-frame",
+        "-e",
+        type=int,
+        required=True,
+        help="End frame",
+    )
+    parser_rand2.add_argument(
+        "--channels",
+        "-c",
+        nargs="+",
+        type=int,
+        default=[0, 1, 2, 3],
+        help="Channels to randomly chose from (NOTE: 0 is broadcast)",
+    )
+    parser_rand2.add_argument(
         "--frame-size", "-f", type=int, default=64, help="Size (in bytes) of frame"
     )
 
