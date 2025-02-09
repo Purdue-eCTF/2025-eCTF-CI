@@ -3,7 +3,7 @@
 
 echo "TODO: 3-1-update-invalid-should-fail.sh"
 exit 1
-# timeout 2s python modified_subscribe.py <file> /dev/ttyACM0
+# timeout 5s python modified_subscribe.py <file> /dev/ttyACM0
 
 # if [ "$?" -ne 0 ]; then
 #   exit 1
