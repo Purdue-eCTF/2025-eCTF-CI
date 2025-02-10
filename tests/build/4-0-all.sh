@@ -3,6 +3,7 @@ rm -f ../test_out/subscription.bin
 timeout 10s python -m ectf25_design.gen_subscription ../test_out/global.secrets ../test_out/subscription.bin 0xDEADBEEF 32 63 2 || exit $?
 timeout 2s python modified_subscribe.py ../test_out/subscription.bin /dev/ttyACM0 || exit $?
 
+rm -f ../test_out/subscription.bin
 timeout 10s python -m ectf25_design.gen_subscription ../test_out/global.secrets ../test_out/subscription.bin 0xDEADBEEF 32 63 3 || exit $?
 timeout 2s python modified_subscribe.py ../test_out/subscription.bin /dev/ttyACM0 || exit $?
 
