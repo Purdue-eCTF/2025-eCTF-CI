@@ -7,6 +7,7 @@ C_RED="\033[38;5;9m"
 C_GREEN="\033[38;5;2m"
 
 cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
+. ../.venv/bin/activate
 
 for test in tests/attack/*.sh; do
     if [[ $test == tests/attack/x-*.sh ]]; then
