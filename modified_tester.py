@@ -53,7 +53,7 @@ def rand_gen2(args) -> Iterator[tuple[int, bytes, int]]:
 
     Generate --num-frames if provided, otherwise generate forever
     """
-    for idx in range(args.start_frame, args.end_frame):
+    for idx in range(args.start_frame, args.end_frame + 1):
         # pick a random channel
         channel: int = random.choice(args.channels)
 
