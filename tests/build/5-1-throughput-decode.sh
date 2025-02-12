@@ -8,7 +8,7 @@ done
 
 timeout 120s python -m ectf25.utils.stress_test --test-size 10000 encode --dump ../test_out/stress_test_encoded_frames.json ../test_out/global.secrets
 return_code=$?
-if [ $return_code -ne 255 ]; then
+if [ $return_code -ne 255 ] && [ $return_code -ne 0 ]; then
 	exit $return_code
 fi
 
