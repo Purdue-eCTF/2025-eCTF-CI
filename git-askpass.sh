@@ -1,4 +1,6 @@
 #!/bin/sh
 # used for meta-infra
-echo "$GITHUB_USERNAME"
-echo "$GITHUB_TOKEN"
+case "$1" in
+    Username*) exec echo "$GITHUB_USERNAME" ;;
+    Password*) exec echo "$GITHUB_TOKEN" ;;
+esac
