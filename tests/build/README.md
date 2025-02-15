@@ -13,7 +13,7 @@ test case 2: encode/decode
 
 test case 3: errors
 
--   3.1: update invalid (TODO)
+-   3.1: update invalid
 -   3.2: decode invalid timestamp (both non-monotonic and outside subscription)
 -   3.3: decode invalid channel w/ valid subscription for another channel
 
