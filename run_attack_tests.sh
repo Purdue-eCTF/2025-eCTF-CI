@@ -12,7 +12,7 @@ cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
 read -r IP CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT < ports.txt
 export IP CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT
 
-for test in tests/attack/*.sh; do
+for test in tests/attack/"$1"/*.sh; do
     if [[ $test == tests/attack/x-*.sh ]]; then
         continue
     fi
