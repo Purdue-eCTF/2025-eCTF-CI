@@ -119,7 +119,11 @@ def json_gen(args) -> Iterator[tuple[int, bytes, int]]:
                     timestamp = time.time_ns() // 1000
 
                 # yield values to outer loop
-                yield channel, data.encode("latin-1"), timestamp
+                yield (
+                    channel,
+                    bytes.fromhex(data) if args.hex else data.encode("latin-1"),
+                    timestamp,
+                )
             except ValueError:
                 logger.warning(
                     "Frame should be in format of '(channel, frame, timestamp)',"
@@ -262,6 +266,7 @@ def parse_args():
     parser_json.add_argument(
         "--loop", action="store_true", help="Loop at end of json source"
     )
+    parser_json.add_argument("--hex", action="store_true")
     args = parser.parse_args()
 
     if args.port is None and not args.stub_decoder:
