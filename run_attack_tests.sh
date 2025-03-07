@@ -9,7 +9,7 @@ C_GREEN="\033[38;5;2m"
 cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
 . ../.venv/bin/activate
 
-read -r IP CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT < ports.txt
+read -r IP CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT < ../attack_out/ports.txt
 export IP CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT
 
 for test in tests/attack/global/*.sh tests/attack/"$1"/*.sh; do

@@ -49,8 +49,8 @@ class BootloaderIntf:
         """Get and check the response code"""
         retry_count = 0
         while (resp := self.ser.read(1)) == b"":
-            if retry_count >= 500000:  # max retries
-                print("Bruh momentus... retrying")
+            if retry_count >= 1000000:  # max retries
+                logger.info("Bruh momentus... retrying")
                 exit(26)
             retry_count += 1
         resp = ord(resp)
