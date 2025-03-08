@@ -13,6 +13,8 @@ read -r TEAM IP CHANNEL_0_PORT CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHAN
 export IP CHANNEL_0_PORT CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT
 export LOGURU_LEVEL=INFO
 
+trap "rm -f temp_output" EXIT
+
 for test in tests/attack/*/*; do
     if [[ $test == tests/attack/x-*.sh ]] || [[ $test == *.md ]]; then
         continue
@@ -20,10 +22,8 @@ for test in tests/attack/*/*; do
     scenario=$(basename "$(dirname "$test")")
     echo -e "${C_MEDIUMPURPLE1}${F_BOLD}Running test $test${NO_FORMAT}"
     "$test" 2>&1 | tee temp_output
-    grep -aEo "[a-z0-9]{16}\^ flag \^" temp_output | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/"
+    grep -aEo "[a-z0-9]{16}\^ flag \^" temp_output | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/;s/\^ flag \^$/}/"
 done
-
-rm temp_output
 
 if [ $passed -ne $num_tests ]; then
     echo -e "${C_RED}${F_BOLD}Passed ${passed}/${num_tests} tests${NO_FORMAT}"
