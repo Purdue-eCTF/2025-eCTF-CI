@@ -1,3 +1,4 @@
+# modified to check list timing
 """
 Author: Ben Janis
 Date: 2025
@@ -18,35 +19,35 @@ from loguru import logger
 
 
 def main():
-	# Define and parse command line arguments
-	parser = argparse.ArgumentParser(
-		prog="ectf25.tv.list",
-		description="List the channels with a valid subscription on the Decoder",
-	)
-	parser.add_argument(
-		"port",
-		help="Serial port to the Decoder (see https://rules.ectf.mitre.org/2025/getting_started/boot_reference for platform-specific instructions)",
-	)
-	args = parser.parse_args()
+    # Define and parse command line arguments
+    parser = argparse.ArgumentParser(
+        prog="ectf25.tv.list",
+        description="List the channels with a valid subscription on the Decoder",
+    )
+    parser.add_argument(
+        "port",
+        help="Serial port to the Decoder (see https://rules.ectf.mitre.org/2025/getting_started/boot_reference for platform-specific instructions)",
+    )
+    args = parser.parse_args()
 
-	# Open Decoder interface
-	decoder = DecoderIntf(args.port)
+    # Open Decoder interface
+    decoder = DecoderIntf(args.port)
 
-	# Run the list command
-	start_time = time.perf_counter()
-	subscriptions = decoder.list()
-	end_time = time.perf_counter()
+    # Run the list command
+    start_time = time.perf_counter()
+    subscriptions = decoder.list()
+    end_time = time.perf_counter()
 
-	# Print the results
-	for channel, start, end in subscriptions:
-		logger.info(f"Found subscription: Channel {channel} {start}:{end}")
+    # Print the results
+    for channel, start, end in subscriptions:
+        logger.info(f"Found subscription: Channel {channel} {start}:{end}")
 
-	if end_time - start_time < 0.5:
-		logger.success("List successful")
-	else:
-		logger.error(f"List timed out: {end_time - start_time}s")
-		exit(1)
+    if end_time - start_time < 0.5:
+        logger.success("List successful")
+    else:
+        logger.error(f"List timed out: {end_time - start_time}s")
+        exit(1)
 
 
 if __name__ == "__main__":
-	main()
+    main()
