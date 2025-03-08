@@ -16,7 +16,7 @@ for test in tests/attack/*/*; do
     if [[ $test == tests/attack/x-*.sh ]] || [[ $test == *.md ]]; then
         continue
     fi
-    scenario=$(dirname "$test")
+    scenario=$(basename "$(dirname "$test")")
     echo -e "${C_MEDIUMPURPLE1}${F_BOLD}Running test $test${NO_FORMAT}"
     "$test" 2>&1 | tee temp_output
     grep -aEo "[a-z0-9]{16}^ flag ^" temp_output | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/"
