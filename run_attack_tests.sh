@@ -9,16 +9,17 @@ C_GREEN="\033[38;5;2m"
 cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
 . ../.venv/bin/activate
 
-read -r IP CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT < ../attack_out/ports.txt
+read -r TEAM IP CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT < ../attack_out/ports.txt
 export IP CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT
 
-for test in tests/attack/global/*.sh tests/attack/"$1"/*.sh; do
-    if [[ $test == tests/attack/x-*.sh ]]; then
+for test in tests/attack/*/*; do
+    if [[ $test == tests/attack/x-*.sh ]] || [[ $test == *.md ]]; then
         continue
     fi
+    scenario=$(dirname "$test")
     echo -e "${C_MEDIUMPURPLE1}${F_BOLD}Running test $test${NO_FORMAT}"
-    bash "$test" 2>&1 | tee temp_output
-    grep -aEo "[a-z0-9]{16}^ flag ^" temp_output | sed "s/^/POTENTIAL FLAG: ectf{$1_/"
+    "$test" 2>&1 | tee temp_output
+    grep -aEo "[a-z0-9]{16}^ flag ^" temp_output | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/"
 done
 
 rm temp_output
