@@ -43,7 +43,7 @@ done
 sleep 1
 echo "Testing with list"
 
-timeout 3s python -m ectf25.tv.list /dev/ttyACM0
+LOGURU_LEVEL=INFO timeout 3s python -m ectf25.tv.list /dev/ttyACM0
 
 if [ "$?" -ne 0 ]; then
   echo "%%FAILED%%\nReason: Listing failed."
