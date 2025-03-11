@@ -9,7 +9,7 @@ C_GREEN="\033[38;5;2m"
 cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
 . ../.venv/bin/activate
 
-read -r TEAM IP CHANNEL_0_PORT CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT < ../attack_out/ports.txt
+read -r IP CHANNEL_0_PORT CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT < ../attack_out/ports.txt
 export IP CHANNEL_0_PORT CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT
 export LOGURU_LEVEL=INFO
 
@@ -25,7 +25,4 @@ for test in tests/attack/*/*; do
     grep -aEo "[a-z0-9]{16}\^ flag \^" temp_output | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/;s/\^ flag \^$/}/"
 done
 
-if [ $passed -ne $num_tests ]; then
-    echo -e "${C_RED}${F_BOLD}Passed ${passed}/${num_tests} tests${NO_FORMAT}"
-fi
-echo -e "${C_GREEN}${F_BOLD}All tests passed!${NO_FORMAT}"
+echo -e "${C_MEDIUMPURPLE1}${F_BOLD}All tests complete!${NO_FORMAT}"
