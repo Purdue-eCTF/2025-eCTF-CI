@@ -2,13 +2,12 @@
 import asyncio
 import json
 import struct
-import subprocess
 
 from ectf25.utils.decoder import DecoderIntf
 
 
 def conn():
-    r = DecoderIntf("/dev/ttyACM0")
+    r = DecoderIntf("/dev/ttyACM0", timeout=10, write_timeout=10)
 
     return r
 
@@ -36,10 +35,10 @@ async def main():
         ):
             new_frame = bytearray.fromhex(msg["encoded"])
             new_frame[offset : offset + 8] = struct.pack("<Q", timestamp)
-            print(await asyncio.wait_for(asyncio.to_thread(r.decode, new_frame), 10))
+            print(r.decode(new_frame))
     except TimeoutError:
         print("Decoder crashed")
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(asyncio.wait_for(main(), 30))

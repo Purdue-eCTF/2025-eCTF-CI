@@ -3,7 +3,6 @@ import asyncio
 import json
 import os
 import socket
-import subprocess
 import sys
 
 from ectf25.utils.decoder import DecoderIntf
@@ -14,7 +13,7 @@ logger.add(sys.stdout, level="SUCCESS")
 
 
 def conn():
-    r = DecoderIntf("/dev/ttyACM0")
+    r = DecoderIntf("/dev/ttyACM0", timeout=10, write_timeout=10)
 
     return r
 
@@ -36,9 +35,7 @@ async def main():
             new_frame[byte_offset] ^= 1 << bit_offset
             try:
                 print(byte_offset, bit_offset)
-                decoded = await asyncio.wait_for(
-                    asyncio.to_thread(r.decode, new_frame), timeout=10
-                )
+                decoded = r.decode(new_frame)
             except TimeoutError:
                 # assume decoder crashed
                 print(

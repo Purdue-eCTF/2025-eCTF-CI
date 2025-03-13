@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import asyncio
-import subprocess
 import sys
 
 from ectf25.utils.decoder import DecoderIntf
@@ -11,7 +10,7 @@ logger.add(sys.stdout, level="SUCCESS")
 
 
 def conn():
-    r = DecoderIntf("/dev/ttyACM0")
+    r = DecoderIntf("/dev/ttyACM0", timeout=10, write_timeout=10)
 
     return r
 
@@ -29,11 +28,9 @@ async def main():
             new_subscription[byte_offset] ^= 1 << bit_offset
             try:
                 print(byte_offset, bit_offset)
-                orig_list = await asyncio.wait_for(asyncio.to_thread(r.list), 10)
-                await asyncio.wait_for(
-                    asyncio.to_thread(r.subscribe, new_subscription), 10
-                )
-                new_list = await asyncio.wait_for(asyncio.to_thread(r.list), 10)
+                orig_list = r.list()
+                r.subscribe(new_subscription)
+                new_list = r.list()
                 if new_list != orig_list:
                     print(
                         f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} results in {new_list}"
