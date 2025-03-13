@@ -13,4 +13,4 @@ while [ ! -e "/dev/disk/by-label/DAPLINK" ]; do
   ((USB_RETRY_COUNT++))
 done
 echo
-sleep 3
+sleep 5
