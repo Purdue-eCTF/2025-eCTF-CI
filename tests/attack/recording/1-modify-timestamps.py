@@ -31,15 +31,10 @@ async def main():
         return
     print("found timestamp offset", offset)
 
-    try:
-        for msg, timestamp in zip(
-            recording, range(channel_1[1], channel_1[2]), strict=False
-        ):
-            new_frame = bytearray.fromhex(msg["encoded"])
-            new_frame[offset : offset + 8] = struct.pack("<Q", timestamp)
-            print(r.decode(new_frame))
-    except TimeoutError:
-        print("Decoder crashed")
+    for msg, timestamp in zip(recording, range(channel_1[1], channel_1[2]), strict=False):
+        new_frame = bytearray.fromhex(msg["encoded"])
+        new_frame[offset : offset + 8] = struct.pack("<Q", timestamp)
+        print(await asyncio.wait_for(asyncio.to_thread(r.decode, new_frame), 10))
 
 
 if __name__ == "__main__":

@@ -20,7 +20,7 @@ async def main():
 
     for msg in recording:
         frame = bytearray.fromhex(msg["encoded"])
-        print(r.decode(frame))
+        print(await asyncio.wait_for(asyncio.to_thread(r.decode, frame), 10))
 
 
 if __name__ == "__main__":

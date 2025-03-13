@@ -36,12 +36,12 @@ async def main():
                 new_list = await asyncio.wait_for(asyncio.to_thread(r.list), 10)
                 if new_list != orig_list:
                     print(
-                        f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} results in {new_list}"
+                        f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} in subscription results in {new_list}"
                     )
             except TimeoutError:
                 # assume decoder crashed
                 print(
-                    f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} caused decoder to crash"
+                    f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} in subscription caused decoder to crash"
                 )
                 sys.stdout.flush()
                 os._exit(0)

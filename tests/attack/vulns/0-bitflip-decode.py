@@ -41,7 +41,7 @@ async def main():
             except TimeoutError:
                 # assume decoder crashed
                 print(
-                    f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} caused decoder to crash"
+                    f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} in encoded frame caused decoder to crash"
                 )
                 sys.stdout.flush()
                 os._exit(0)
@@ -49,7 +49,7 @@ async def main():
                 print(e)
             else:
                 print(
-                    f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} results in {decoded}"
+                    f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} in encoded frame results in {decoded}"
                 )
 
 
