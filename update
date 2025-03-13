@@ -1,12 +1,12 @@
 #!/bin/bash
 
 if [[ $# -ne 1 ]] && [[ $# -ne 2 ]]; then
-  echo "Usage: $0 <filename_to_flash> <attacking>"
+  echo "Usage: $0 <filename_to_flash> <attack_board>"
   exit 1
 fi
 
 BUILD_PATH=$1
-ATTACKING=$2
+ATTACK_BOARD=$2
 # parent directory of update script
 CI_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -50,7 +50,7 @@ done
 sleep 1
 
 # attack board requires power cycle
-if [[ -n "$ATTACKING" ]]; then
+if [[ -n "$ATTACK_BOARD" ]]; then
   echo "Power cycling board"
   power_cycle
   sleep 1
