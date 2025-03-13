@@ -35,7 +35,9 @@ async def main():
             new_frame[byte_offset] ^= 1 << bit_offset
             try:
                 print(byte_offset, bit_offset)
-                decoded = r.decode(new_frame)
+                decoded = await asyncio.wait_for(
+                    asyncio.to_thread(r.decode, new_frame), 10
+                )
             except TimeoutError:
                 # assume decoder crashed
                 print(
