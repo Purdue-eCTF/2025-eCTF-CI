@@ -8,7 +8,7 @@ fi
 BUILD_PATH=$1
 ATTACK_BOARD=$2
 # parent directory of update script
-CI_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
 
 FLASH_RETRY_COUNT=0
 while true; do
@@ -17,12 +17,12 @@ while true; do
     exit 47
   fi
   echo "Putting board in update mode"
-  python3 "${CI_DIR}/enable_update.py"
-  "${CI_DIR}./power_cycle.sh" || exit $?
-  python3 "${CI_DIR}/disable_update.py"
+  python3 ./enable_update.py
+  ./power_cycle.sh || exit $?
+  python3 ./disable_update.py
   echo -e "Done!\nFlashing"
 
-  python3 "${CI_DIR}/modified_flash.py" "$BUILD_PATH" /dev/ttyACM0
+  python3 ./modified_flash.py "$BUILD_PATH" /dev/ttyACM0
   if [ "$?" -ne 26 ]; then
     break
   fi
@@ -34,7 +34,7 @@ sleep 1
 # attack board requires power cycle
 if [[ -n "$ATTACK_BOARD" ]]; then
   echo "Power cycling board"
-  "${CI_DIR}./power_cycle.sh" || exit $?
+  ./power_cycle.sh || exit $?
   sleep 1
 fi
 
