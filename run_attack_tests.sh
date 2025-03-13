@@ -24,6 +24,9 @@ for test in tests/attack/*/*; do
     scenario=$(basename "$(dirname "$test")")
     echo -e "${C_MEDIUMPURPLE1}${F_BOLD}Running test $test${NO_FORMAT}"
     "$test" 2>&1 | tee temp_output
+    if [[ ${PIPESTATUS[0]} -eq 124 ]]; then 
+        echo -e "${C_RED}${F_BOLD}Test $test failed because it timed out${NO_FORMAT}"
+    fi
     grep -aEo "[a-z0-9]{16}\^ flag \^" temp_output | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/;s/\^ flag \^$/}/"
 
     if ! timeout 3s python3 -m ectf25.tv.list /dev/ttyACM0 >/dev/null 2>&1; then

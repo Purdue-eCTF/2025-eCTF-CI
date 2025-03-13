@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import asyncio
+import os
 import sys
 
 from ectf25.utils.decoder import DecoderIntf
@@ -10,7 +11,7 @@ logger.add(sys.stdout, level="SUCCESS")
 
 
 def conn():
-    r = DecoderIntf("/dev/ttyACM0", timeout=10, write_timeout=10)
+    r = DecoderIntf("/dev/ttyACM0", timeout=5, write_timeout=5)
 
     return r
 
@@ -28,9 +29,11 @@ async def main():
             new_subscription[byte_offset] ^= 1 << bit_offset
             try:
                 print(byte_offset, bit_offset)
-                orig_list = r.list()
-                r.subscribe(new_subscription)
-                new_list = r.list()
+                orig_list = await asyncio.wait_for(asyncio.to_thread(r.list), 10)
+                await asyncio.wait_for(
+                    asyncio.to_thread(r.subscribe, new_subscription), 10
+                )
+                new_list = await asyncio.wait_for(asyncio.to_thread(r.list), 10)
                 if new_list != orig_list:
                     print(
                         f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} results in {new_list}"
@@ -40,10 +43,17 @@ async def main():
                 print(
                     f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} caused decoder to crash"
                 )
-                return
+                sys.stdout.flush()
+                os._exit(0)
+
             except Exception as e:
                 print(e)
 
 
 if __name__ == "__main__":
-    asyncio.run(asyncio.wait_for(main(), timeout=90))
+    try:
+        asyncio.run(asyncio.wait_for(main(), timeout=90))
+    except TimeoutError:
+        sys.stdout.flush()
+        sys.stderr.flush()
+        os._exit(124)

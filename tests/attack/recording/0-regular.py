@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 import asyncio
 import json
+import os
+import sys
 
 from ectf25.utils.decoder import DecoderIntf
 
 
 def conn():
-    r = DecoderIntf("/dev/ttyACM0", timeout=10, write_timeout=10)
+    r = DecoderIntf("/dev/ttyACM0", timeout=5, write_timeout=5)
 
     return r
 
@@ -22,4 +24,9 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(asyncio.wait_for(main(), 30))
+    try:
+        asyncio.run(asyncio.wait_for(main(), 30))
+    except TimeoutError:
+        sys.stdout.flush()
+        sys.stderr.flush()
+        os._exit(124)

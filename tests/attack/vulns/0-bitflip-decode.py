@@ -13,7 +13,7 @@ logger.add(sys.stdout, level="SUCCESS")
 
 
 def conn():
-    r = DecoderIntf("/dev/ttyACM0", timeout=10, write_timeout=10)
+    r = DecoderIntf("/dev/ttyACM0", timeout=5, write_timeout=5)
 
     return r
 
@@ -43,7 +43,8 @@ async def main():
                 print(
                     f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} caused decoder to crash"
                 )
-                return
+                sys.stdout.flush()
+                os._exit(0)
             except Exception as e:
                 print(e)
             else:
@@ -53,4 +54,9 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(asyncio.wait_for(main(), timeout=90))
+    try:
+        asyncio.run(asyncio.wait_for(main(), timeout=90))
+    except TimeoutError:
+        sys.stdout.flush()
+        sys.stderr.flush()
+        os._exit(124)
