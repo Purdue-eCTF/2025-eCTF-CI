@@ -3,7 +3,6 @@ import json
 import os
 import socket
 import sys
-from math import log
 
 from ectf25.utils.decoder import DecoderIntf
 from loguru import logger

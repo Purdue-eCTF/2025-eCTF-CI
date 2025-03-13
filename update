@@ -1,15 +1,33 @@
 #!/bin/bash
 
-if [[ $# -ne 1 ]]; then
-  echo "Usage: $0 <filename_to_flash>"
+if [[ $# -ne 1 ]] && [[ $# -ne 2 ]]; then
+  echo "Usage: $0 <filename_to_flash> <attacking>"
   exit 1
 fi
 
 BUILD_PATH=$1
+ATTACKING=$2
 # parent directory of update script
 CI_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-FLASH_RETRY_COUNT=0
 
+power_cycle() {
+  local USB_RETRY_COUNT=0
+  /usr/sbin/uhubctl -l 1-1 -a cycle > /dev/null 2>/dev/null
+
+  echo -n "Waiting for USB to connect"
+  while [ ! -e "/dev/disk/by-label/DAPLINK" ]; do
+    if [ "$USB_RETRY_COUNT" -gt  20 ]; then
+      echo "%%FAILED%%\nReason: USB connection timeout"
+      exit 47
+    fi
+    echo -n "."
+    sleep 1
+    ((USB_RETRY_COUNT++))
+  done
+  echo
+}
+
+FLASH_RETRY_COUNT=0
 while true; do
   USB_RETRY_COUNT=0
   if [ "$FLASH_RETRY_COUNT" -gt 5 ]; then
@@ -17,23 +35,12 @@ while true; do
     exit 47
   fi
   echo "Putting board in update mode"
-  python3 ${CI_DIR}/enable_update.py
-  /usr/sbin/uhubctl -l 1-1 -a cycle > /dev/null 2>/dev/null
+  python3 "${CI_DIR}/enable_update.py"
+  power_cycle
+  python3 "${CI_DIR}/disable_update.py"
+  echo -e "Done!\nFlashing"
 
-  echo -n "Waiting for USB to connect"
-  while [ ! -e "/dev/disk/by-label/DAPLINK" ]; do
-    if [ "$USB_RETRY_COUNT" -gt  20 ]; then
-	echo "%%FAILED%%\nReason: USB connection timeout"
-	exit 47
-    fi
-    echo -n "."
-    sleep 1
-    ((USB_RETRY_COUNT++))
-  done
-  python3 ${CI_DIR}/disable_update.py
-  echo -e "\nDone!\nFlashing"
-
-  python3 ${CI_DIR}/modified_flash.py $BUILD_PATH /dev/ttyACM0
+  python3 "${CI_DIR}/modified_flash.py" "$BUILD_PATH" /dev/ttyACM0
   if [ "$?" -ne 26 ]; then
     break
   fi
@@ -41,6 +48,14 @@ while true; do
 done
 
 sleep 1
+
+# attack board requires power cycle
+if [[ -n "$ATTACKING" ]]; then
+  echo "Power cycling board"
+  power_cycle
+  sleep 1
+fi
+
 echo "Testing with list"
 
 LOGURU_LEVEL=INFO timeout 3s python -m ectf25.tv.list /dev/ttyACM0
