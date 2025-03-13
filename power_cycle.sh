@@ -5,7 +5,7 @@ USB_RETRY_COUNT=0
 echo -n "Waiting for USB to connect"
 while [ ! -e "/dev/disk/by-label/DAPLINK" ]; do
   if [ "$USB_RETRY_COUNT" -gt  20 ]; then
-    echo "%%FAILED%%\nReason: USB connection timeout"
+    echo -e "%%FAILED%%\nReason: USB connection timeout"
     exit 47
   fi
   echo -n "."
@@ -13,3 +13,4 @@ while [ ! -e "/dev/disk/by-label/DAPLINK" ]; do
   ((USB_RETRY_COUNT++))
 done
 echo
+sleep 1

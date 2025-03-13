@@ -35,7 +35,6 @@ sleep 1
 if [[ -n "$ATTACK_BOARD" ]]; then
   echo "Power cycling board"
   ./power_cycle.sh || exit $?
-  sleep 1
 fi
 
 echo "Testing with list"
