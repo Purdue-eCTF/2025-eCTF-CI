@@ -31,7 +31,7 @@ for test in tests/attack/*/*; do
 
     if ! timeout 3s python3 -m ectf25.tv.list /dev/ttyACM0 >/dev/null 2>&1; then
         echo "Decoder crashed, rebooting"
-        ./power_cycle.sh
+        ./power_cycle.sh 1
     fi
 done
 
