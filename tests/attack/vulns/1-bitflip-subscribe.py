@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import asyncio
+import subprocess
 import sys
 
 from ectf25.utils.decoder import DecoderIntf
@@ -14,10 +16,10 @@ def conn():
     return r
 
 
-def main():
+async def main():
     r = conn()
 
-    with open("../attack_out/our.sub", "rb") as f:
+    with open("../attack_out/own.sub", "rb") as f:
         subscription = bytearray(f.read())
 
     print(f"orig listing: {r.list()}")
@@ -27,16 +29,24 @@ def main():
             new_subscription[byte_offset] ^= 1 << bit_offset
             try:
                 print(byte_offset, bit_offset)
-                orig_list = r.list()
-                r.subscribe(new_subscription)
-                new_list = r.list()
+                orig_list = await asyncio.wait_for(asyncio.to_thread(r.list), 10)
+                await asyncio.wait_for(
+                    asyncio.to_thread(r.subscribe, new_subscription), 10
+                )
+                new_list = await asyncio.wait_for(asyncio.to_thread(r.list), 10)
                 if new_list != orig_list:
                     print(
                         f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} results in {new_list}"
                     )
+            except TimeoutError:
+                # assume decoder crashed
+                print(
+                    f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} caused decoder to crash"
+                )
+                return
             except Exception as e:
                 print(e)
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(asyncio.wait_for(main(), timeout=90))

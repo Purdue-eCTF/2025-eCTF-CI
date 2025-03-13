@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+import asyncio
 import json
 import os
 import socket
+import subprocess
 import sys
 
 from ectf25.utils.decoder import DecoderIntf
@@ -17,7 +19,7 @@ def conn():
     return r
 
 
-def main():
+async def main():
     r = conn()
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((os.environ["IP"], int(os.environ["CHANNEL_1_PORT"])))
@@ -34,7 +36,15 @@ def main():
             new_frame[byte_offset] ^= 1 << bit_offset
             try:
                 print(byte_offset, bit_offset)
-                decoded = r.decode(new_frame)
+                decoded = await asyncio.wait_for(
+                    asyncio.to_thread(r.decode, new_frame), timeout=10
+                )
+            except TimeoutError:
+                # assume decoder crashed
+                print(
+                    f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} caused decoder to crash"
+                )
+                return
             except Exception as e:
                 print(e)
             else:
@@ -44,4 +54,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(asyncio.wait_for(main(), timeout=90))

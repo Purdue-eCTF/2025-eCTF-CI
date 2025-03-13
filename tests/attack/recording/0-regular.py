@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import asyncio
 import json
 
 from ectf25.utils.decoder import DecoderIntf
@@ -21,4 +22,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(asyncio.wait_for(asyncio.to_thread(main), 30))
