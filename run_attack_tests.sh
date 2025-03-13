@@ -1,10 +1,12 @@
 #!/bin/bash
 
-NO_FORMAT="\033[0m"
-F_BOLD="\033[1m"
-C_MEDIUMPURPLE1="\033[38;5;141m"
-C_RED="\033[38;5;9m"
-C_GREEN="\033[38;5;2m"
+if [[ $# -eq 1 ]]; then # pass an argument to disable colors 
+    NO_FORMAT="\033[0m"
+    F_BOLD="\033[1m"
+    C_MEDIUMPURPLE1="\033[38;5;141m"
+    C_RED="\033[38;5;9m"
+    C_GREEN="\033[38;5;2m"
+fi
 
 cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
 . ../.venv/bin/activate
