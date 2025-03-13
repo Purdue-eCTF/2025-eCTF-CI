@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 USB_RETRY_COUNT=0
 /usr/sbin/uhubctl -l 1-1 -a cycle > /dev/null 2>/dev/null
 

@@ -23,7 +23,11 @@ async def main():
 
     first_timestamp = recording[0]["timestamp"]
     first_frame = bytes.fromhex(recording[0]["encoded"])
-    offset = first_frame.index(struct.pack("<Q", first_timestamp))
+    try:
+        offset = first_frame.index(struct.pack("<Q", first_timestamp))
+    except ValueError:
+        print("couldn't find timestamp offset")
+        return
     print("found timestamp offset", offset)
 
     try:
