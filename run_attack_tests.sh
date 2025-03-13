@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ $# -eq 1 ]]; then # pass an argument to disable colors 
+if [[ $# -eq 0 ]]; then # pass an argument to disable colors 
     NO_FORMAT="\033[0m"
     F_BOLD="\033[1m"
     C_MEDIUMPURPLE1="\033[38;5;141m"
