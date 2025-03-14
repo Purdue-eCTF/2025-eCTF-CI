@@ -33,6 +33,7 @@ async def main():
     payload = json.loads(buf.split(b"\n")[0])
     frame = bytearray.fromhex(payload["encoded"])
 
+    first_vuln = True
     for byte_offset in range(len(frame)):
         for bit_offset in range(8):
             new_frame = frame[:]
@@ -52,8 +53,13 @@ async def main():
             except Exception as e:
                 print(e)
             else:
+                if first_vuln:
+                    first_vuln = False
+                    print(
+                        "POTENTIAL VULNERABILITY: flipping bytes in encoded frame results in valid decode, Ctrl-F 'Decode bitflip details' in logs for more detail"
+                    )
                 print(
-                    f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} in encoded frame results in {decoded}"
+                    f"Decode bitflip details: flipping byte {byte_offset} bit {bit_offset} in encoded frame results in {decoded}"
                 )
 
 

@@ -26,6 +26,7 @@ async def main():
     with open("../test_out/own.sub", "rb") as f:
         subscription = bytearray(f.read())
 
+    first_vuln = True
     print(f"orig listing: {r.list()}")
     for byte_offset in range(len(subscription)):
         for bit_offset in range(8):
@@ -39,8 +40,13 @@ async def main():
                 )
                 new_list = await asyncio.wait_for(asyncio.to_thread(r.list), 10)
                 if new_list != orig_list:
+                    if first_vuln:
+                        first_vuln = False
+                        print(
+                            "POTENTIAL VULNERABILITY: flipping bytes in subscription results in valid subscribe, Ctrl-F 'Subscribe bitflip details' in log for more detail"
+                        )
                     print(
-                        f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} in subscription results in {new_list}"
+                        f"Subscribe bitflip details: flipping byte {byte_offset} bit {bit_offset} in subscription results in {new_list}"
                     )
             except TimeoutError:
                 # assume decoder crashed
