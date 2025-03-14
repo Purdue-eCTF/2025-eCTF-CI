@@ -26,7 +26,7 @@ async def main():
     r = conn()
 
     subscriptions = [
-        gen_subscription(b"{}", decoder_id, 0, 2**63 - 1, i) for i in range(4)
+        gen_subscription(b"{}", decoder_id, 0, 2**63 - 1, i) for i in range(1, 5)
     ]
 
     for subscription in subscriptions:

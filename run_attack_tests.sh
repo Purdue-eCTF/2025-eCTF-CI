@@ -14,6 +14,7 @@ cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
 read -r IP CHANNEL_0_PORT CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT < ../attack_out/ports.txt
 export IP CHANNEL_0_PORT CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT
 export LOGURU_LEVEL=INFO
+export PYTHON_PATH=$PWD
 
 trap "rm -f temp_output" EXIT
 
