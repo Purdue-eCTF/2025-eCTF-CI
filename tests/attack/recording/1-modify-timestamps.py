@@ -7,6 +7,8 @@ import sys
 
 from ectf25.utils.decoder import DecoderIntf
 
+from attack_utils import run_attack
+
 
 def conn():
     r = DecoderIntf("/dev/ttyACM0", timeout=5, write_timeout=5)
@@ -38,9 +40,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(asyncio.wait_for(main(), 30))
-    except TimeoutError:
-        sys.stdout.flush()
-        sys.stderr.flush()
-        os._exit(124)
+    run_attack(main, 30)

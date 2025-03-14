@@ -5,6 +5,12 @@ import os
 import sys
 
 from ectf25.utils.decoder import DecoderIntf
+from loguru import logger
+
+from attack_utils import recording_playback, run_attack
+
+logger.remove()
+logger.add(sys.stdout, level="INFO")
 
 
 def conn():
@@ -13,20 +19,5 @@ def conn():
     return r
 
 
-async def main():
-    with open("../attack_out/recording.json") as f:
-        recording = json.load(f)
-    r = conn()
-
-    for msg in recording:
-        frame = bytearray.fromhex(msg["encoded"])
-        print(await asyncio.wait_for(asyncio.to_thread(r.decode, frame), 10))
-
-
 if __name__ == "__main__":
-    try:
-        asyncio.run(asyncio.wait_for(main(), 30))
-    except TimeoutError:
-        sys.stdout.flush()
-        sys.stderr.flush()
-        os._exit(124)
+    run_attack(recording_playback, 30)

@@ -6,6 +6,8 @@ import sys
 from ectf25.utils.decoder import DecoderIntf
 from loguru import logger
 
+from attack_utils import run_attack
+
 logger.remove()
 logger.add(sys.stdout, level="SUCCESS")
 
@@ -51,9 +53,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(asyncio.wait_for(main(), timeout=90))
-    except TimeoutError:
-        sys.stdout.flush()
-        sys.stderr.flush()
-        os._exit(124)
+    run_attack(main, timeout=90)
