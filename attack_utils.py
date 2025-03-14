@@ -54,11 +54,14 @@ async def recording_playback():
 
 
 class LimitedAttackTV(TV):
+    # modifications:
+    # print decode on one line
+    # exit immediately if flag is decoded
+    # decodes first 10 frames only
     def __init__(self, *args, **kwargs):
         self.flag = None
         super().__init__(*args, **kwargs)
 
-    # attack tv but limited to first 10 frames
     def decode(self):
         """Serve frames from the queue to the Decoder, printing the decoded results"""
         logger.info("Starting Decoder loop")

@@ -1,4 +1,3 @@
-# modified to print decode on one line, and exit immediately if flag is decoded
 """
 Author: Ben Janis
 Date: 2025
@@ -13,42 +12,8 @@ Copyright: Copyright (c) 2025 The MITRE Corporation
 """
 
 import argparse
-import re
 
-from ectf25.tv import TV
-from loguru import logger
-
-
-class AttackTV(TV):
-    def decode(self):
-        """Serve frames from the queue to the Decoder, printing the decoded results"""
-        logger.info("Starting Decoder loop")
-        try:
-            while not self.crash.is_set():
-                if not self.to_decode.empty():
-                    # Get an encoded frame from the queue
-                    encoded = self.to_decode.get_nowait()
-
-                    # Send the frame to be decoded
-                    decoded = self.decoder.decode(encoded)
-
-                    # Print the frame
-                    try:
-                        # if the frame contains printable text, pretty print it
-                        logger.info((b"\n" + decoded).decode("utf-8"))
-                    except UnicodeDecodeError:
-                        # if we can't decode bytes, fall back to just printing the frame
-                        logger.info(decoded)
-
-                    if re.search(
-                        r"[a-fA-F0-9]{16}\^ flag \^",
-                        decoded.decode("utf-8", errors="ignore"),
-                    ):
-                        return
-        except Exception:
-            logger.critical("Decoder crashed!")
-            self.crash.set()
-            raise
+from attack_utils import LimitedAttackTV
 
 
 def main():
@@ -69,7 +34,7 @@ def main():
     args = parser.parse_args()
 
     # run the TV
-    tv = AttackTV(args.sat_host, args.sat_port, args.dec_port, args.baud)
+    tv = LimitedAttackTV(args.sat_host, args.sat_port, args.dec_port, args.baud)
     tv.run()
 
 

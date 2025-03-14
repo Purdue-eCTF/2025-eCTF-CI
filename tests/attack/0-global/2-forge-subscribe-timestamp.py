@@ -32,6 +32,7 @@ async def main():
 
     with open("../test_out/expired.sub", "rb") as f:
         channel_2_sub = f.read()
+
     try:
         r.subscribe(forge_timestamp(channel_1_sub, channel_1))
         r.subscribe(forge_timestamp(channel_2_sub, channel_2))
@@ -43,9 +44,10 @@ async def main():
     if flag:
         print(f"POTENTIAL FLAG: ectf{{recording_{flag}}}")
 
+    # expired
     tv = LimitedAttackTV(
         os.environ["IP"],
-        int(os.environ[f"CHANNEL_1_PORT"]),
+        int(os.environ[f"CHANNEL_2_PORT"]),
         "/dev/ttyACM0",
         115200,
     )
