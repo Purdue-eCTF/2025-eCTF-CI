@@ -19,6 +19,9 @@ from attack_utils import (
     run_attack,
 )
 
+logger.remove()
+logger.add(sys.stdout, level="INFO")
+
 
 async def main():
     decoder_id = get_decoder_id()

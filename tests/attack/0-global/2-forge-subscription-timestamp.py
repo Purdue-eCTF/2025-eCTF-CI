@@ -3,8 +3,14 @@
 # for expired and recording scenarios
 
 import os
+import sys
+
+from loguru import logger
 
 from attack_utils import LimitedAttackTV, conn, p64, recording_playback, run_attack
+
+logger.remove()
+logger.add(sys.stdout, level="INFO")
 
 
 def forge_timestamp(subscription, channel):

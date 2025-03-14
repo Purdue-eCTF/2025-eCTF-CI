@@ -29,7 +29,7 @@ for test in tests/attack/*/*; do
         echo -e "${C_RED}${F_BOLD}Test $test failed because it timed out${NO_FORMAT}"
     fi
 
-    if [[ $test != tests/attack/global/* ]]; then # global tests handle this themselves
+    if [[ $test != tests/attack/0-global/* ]]; then # global tests handle this themselves
         grep -aEo "[a-z0-9]{16}\^ flag \^" temp_output | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/;s/\^ flag \^$/}/"
     fi
 

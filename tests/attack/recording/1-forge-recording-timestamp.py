@@ -9,13 +9,7 @@ import sys
 
 from ectf25.utils.decoder import DecoderIntf
 
-from attack_utils import run_attack
-
-
-def conn():
-    r = DecoderIntf("/dev/ttyACM0", timeout=5, write_timeout=5)
-
-    return r
+from attack_utils import conn, run_attack
 
 
 async def main():
