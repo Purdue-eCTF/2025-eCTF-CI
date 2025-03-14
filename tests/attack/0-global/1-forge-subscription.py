@@ -32,9 +32,11 @@ async def main():
     for subscription in subscriptions:
         r.subscribe(subscription)
 
-    await recording_playback()
+    flag = await recording_playback()
+    if flag:
+        print(f"POTENTIAL FLAG: ectf{{recording_{flag}}}")
 
-    for channel in [2, 3, 4]:
+    for channel, scenario in [(2, "expired"), (3, "pirate"), (4, "nosub")]:
         tv = LimitedAttackTV(
             os.environ["IP"],
             int(os.environ[f"CHANNEL_{channel}_PORT"]),
@@ -43,6 +45,9 @@ async def main():
         )
 
         tv.run()
+
+        if tv.flag:
+            print(f"POTENTIAL FLAG: ectf{{{scenario}_{tv.flag}}}")
 
 
 if __name__ == "__main__":

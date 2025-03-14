@@ -24,7 +24,7 @@ else # pass an argument to enable retries
 	while [[ "$POWER_CYCLE_RETRYCOUNT" -le 3 ]];do
 		power_cycle
 		sleep 3
-		if timeout 3s python3 -m ectf25.tv.list /dev/ttyACM0; then
+		if timeout 3s python3 -m ectf25.tv.list /dev/ttyACM0 >/dev/null 2>&1; then
 			exit 0
 		fi
 

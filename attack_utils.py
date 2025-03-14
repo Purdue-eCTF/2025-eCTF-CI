@@ -29,6 +29,18 @@ def p64(i):
     return struct.pack("<Q", i)
 
 
+def match_flag(decoded):
+    m = re.search(
+        r"([a-fA-F0-9]{16})\^ flag \^",
+        decoded.decode("utf-8", errors="ignore"),
+    )
+
+    if m:
+        return m.group(1)
+    else:
+        return None
+
+
 async def recording_playback():
     with open("../test_out/recording.json") as f:
         recording = json.load(f)
@@ -36,7 +48,9 @@ async def recording_playback():
 
     for msg in recording[:10]:
         frame = bytearray.fromhex(msg["encoded"])
-        print(await asyncio.wait_for(asyncio.to_thread(r.decode, frame), 10))
+        decoded = await asyncio.wait_for(asyncio.to_thread(r.decode, frame), 10)
+        if flag := match_flag(decoded):
+            return flag
 
 
 class LimitedAttackTV(TV):
@@ -62,10 +76,8 @@ class LimitedAttackTV(TV):
                         # if we can't decode bytes, fall back to just printing the frame
                         logger.info(decoded)
 
-                    if re.search(
-                        r"[a-fA-F0-9]{16}\^ flag \^",
-                        decoded.decode("utf-8", errors="ignore"),
-                    ):
+                    if flag := match_flag(decoded):
+                        self.flag = flag  # returning :tm:
                         return
                     i += 1
         except Exception:

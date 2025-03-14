@@ -39,7 +39,9 @@ async def main():
         print("couldn't find timestamp offset")
         return
 
-    await recording_playback()
+    flag = await recording_playback()
+    if flag:
+        print(f"POTENTIAL FLAG: ectf{{recording_{flag}}}")
 
     tv = LimitedAttackTV(
         os.environ["IP"],
@@ -48,3 +50,6 @@ async def main():
         115200,
     )
     tv.run()
+
+    if tv.flag:
+        print(f"POTENTIAL FLAG: ectf{{expired_{tv.flag}}}")
