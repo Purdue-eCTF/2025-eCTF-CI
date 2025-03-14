@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# for ETSU
+# forge subscription if the encoder's gen_subscription function doesn't perform any encryption/signing
 import asyncio
 import itertools
 import json

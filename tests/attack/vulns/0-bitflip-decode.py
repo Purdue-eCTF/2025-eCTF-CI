@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# bitflip each bit in the encoded frame and see if decoder crashes or responds with a successful decrypt
+# used to detect teams that don't verify length fields in the frame, etc
 import asyncio
 import json
 import os

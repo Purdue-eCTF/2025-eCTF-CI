@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# bitflip each bit in the encoded frame and see if decoder crashes or responds with a successful subscribe
+# used to detect teams that don't verify subscrption integrity
 import asyncio
 import os
 import sys

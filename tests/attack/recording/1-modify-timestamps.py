@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# modify timestamps of the recording
+# if decoder doesn't verify timestamp integrity
 import asyncio
 import json
 import os
