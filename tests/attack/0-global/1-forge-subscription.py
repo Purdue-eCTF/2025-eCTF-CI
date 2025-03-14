@@ -8,6 +8,7 @@ import re
 import sys
 
 from ectf25.tv import TV
+from ectf25_design.gen_secrets import gen_secrets
 from ectf25_design.gen_subscription import gen_subscription
 from loguru import logger
 
@@ -28,8 +29,9 @@ async def main():
 
     r = conn()
 
+    secrets = gen_secrets(list(range(1, 5)))
     subscriptions = [
-        gen_subscription(b"{}", decoder_id, 0, 2**63 - 1, i) for i in range(1, 5)
+        gen_subscription(secrets, decoder_id, 0, 2**63 - 1, i) for i in range(1, 5)
     ]
 
     for subscription in subscriptions:
