@@ -4,7 +4,7 @@
 
 import os
 
-from attack_utils import LimitedAttackTV, conn, p64, recording_playback
+from attack_utils import LimitedAttackTV, conn, p64, recording_playback, run_attack
 
 
 def forge_timestamp(subscription, channel):
@@ -53,3 +53,7 @@ async def main():
 
     if tv.flag:
         print(f"POTENTIAL FLAG: ectf{{expired_{tv.flag}}}")
+
+
+if __name__ == "__main__":
+    run_attack(main, 30)
