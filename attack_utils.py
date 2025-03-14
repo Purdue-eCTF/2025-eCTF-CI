@@ -17,7 +17,7 @@ def conn():
 
 
 def get_decoder_id():
-    with open("../attack_out/README.md") as f:
+    with open("../test_out/README.md") as f:
         return int(list(f)[3].split(" ")[-1], 16)
 
 
@@ -30,7 +30,7 @@ def p64(i):
 
 
 async def recording_playback():
-    with open("../attack_out/recording.json") as f:
+    with open("../test_out/recording.json") as f:
         recording = json.load(f)
     r = conn()
 

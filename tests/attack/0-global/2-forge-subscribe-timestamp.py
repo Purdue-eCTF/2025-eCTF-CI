@@ -27,10 +27,10 @@ async def main():
     channel_1 = next(c for c in listing if c[0] == 1)
     channel_2 = next(c for c in listing if c[0] == 2)
 
-    with open("../attack_out/own.sub", "rb") as f:
+    with open("../test_out/own.sub", "rb") as f:
         channel_1_sub = f.read()
 
-    with open("../attack_out/expired.sub", "rb") as f:
+    with open("../test_out/expired.sub", "rb") as f:
         channel_2_sub = f.read()
     try:
         r.subscribe(forge_timestamp(channel_1_sub, channel_1))

@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# ensure `pip install -e ../test_out/design/` has been run before
 if [[ $# -eq 0 ]]; then # pass an argument to disable colors 
     NO_FORMAT="\033[0m"
     F_BOLD="\033[1m"
@@ -10,7 +10,6 @@ fi
 
 cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
 . ../.venv/bin/activate
-pip install -e ../test_out/design/
 
 for test in tests/build/*.sh; do
     if [[ $test == tests/build/x-*.sh ]]; then

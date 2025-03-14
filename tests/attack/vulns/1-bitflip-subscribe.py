@@ -23,7 +23,7 @@ def conn():
 async def main():
     r = conn()
 
-    with open("../attack_out/own.sub", "rb") as f:
+    with open("../test_out/own.sub", "rb") as f:
         subscription = bytearray(f.read())
 
     print(f"orig listing: {r.list()}")

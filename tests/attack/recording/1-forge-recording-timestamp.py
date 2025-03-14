@@ -19,7 +19,7 @@ def conn():
 
 
 async def main():
-    with open("../attack_out/recording.json") as f:
+    with open("../test_out/recording.json") as f:
         recording = json.load(f)
     r = conn()
 
