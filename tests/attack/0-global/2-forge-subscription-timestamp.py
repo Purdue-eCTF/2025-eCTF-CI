@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# forge subscrption timestamp
+# forge subscription timestamp
 # for expired and recording scenarios
 
 import os
