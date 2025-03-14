@@ -19,7 +19,7 @@ export PYTHONPATH=$PWD
 trap "rm -f temp_output" EXIT
 
 for test in tests/attack/*/*; do
-    if [[ $test == tests/attack/*/x-*.sh ]] || [[ $test == *.md ]]; then
+    if [[ $test == */x-*.sh ]] || [[ $test == *.md ]]; then
         continue
     fi
     scenario=$(basename "$(dirname "$test")")
@@ -29,7 +29,7 @@ for test in tests/attack/*/*; do
         echo -e "${C_RED}${F_BOLD}Test $test failed because it timed out${NO_FORMAT}"
     fi
 
-    if [[ $test != tests/attack/0-global/* ]]; then # global tests handle this themselves
+    if [[ $scenario != 0-global ]]; then # global tests handle this themselves
         grep -aEo "[a-z0-9]{16}\^ flag \^" temp_output | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/;s/\^ flag \^$/}/"
     fi
 
