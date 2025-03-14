@@ -1,5 +1,4 @@
 #!/bin/bash
-# ensure `pip install -e ../test_out/design/` has been run before
 if [[ $# -eq 0 ]]; then # pass an argument to disable colors 
     NO_FORMAT="\033[0m"
     F_BOLD="\033[1m"
@@ -10,6 +9,11 @@ fi
 
 cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
 . ../.venv/bin/activate
+if [[ -f ../test_out/design/setup.py ]]; then
+    pip uninstall ../test_out/design/
+else
+    pip install -e ../test_out/design/
+fi
 
 read -r IP CHANNEL_0_PORT CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT < ../test_out/ports.txt
 export IP CHANNEL_0_PORT CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT
@@ -17,7 +21,6 @@ export LOGURU_LEVEL=INFO
 export PYTHONPATH=$PWD
 
 trap "rm -f temp_output" EXIT
-
 for test in tests/attack/*/*; do
     if [[ $test == */x-*.sh ]] || [[ $test == *.md ]]; then
         continue
