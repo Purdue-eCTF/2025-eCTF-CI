@@ -10,7 +10,7 @@ fi
 cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" || exit
 . ../.venv/bin/activate
 if [[ -f ../test_out/design/setup.py ]]; then
-    pip uninstall ../test_out/design/
+    pip uninstall ectf25_design
 else
     pip install -e ../test_out/design/
 fi
