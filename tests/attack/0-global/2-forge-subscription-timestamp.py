@@ -55,7 +55,6 @@ async def main():
         os.environ["IP"],
         int(os.environ[f"CHANNEL_2_PORT"]),
         "/dev/ttyACM0",
-        115200,
     )
     tv.run()
 

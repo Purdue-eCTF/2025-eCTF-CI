@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 # forge subscription if the encoder's gen_subscription function doesn't perform any encryption/signing
-import asyncio
-import itertools
-import json
 import os
-import re
 import sys
 
 from ectf25.tv import TV
@@ -46,7 +42,6 @@ async def main():
             os.environ["IP"],
             int(os.environ[f"CHANNEL_{channel}_PORT"]),
             "/dev/ttyACM0",
-            115200,
         )
 
         tv.run()

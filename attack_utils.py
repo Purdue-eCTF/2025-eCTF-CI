@@ -58,9 +58,11 @@ class LimitedAttackTV(TV):
     # print decode on one line
     # exit immediately if flag is decoded
     # decodes first 10 frames only
-    def __init__(self, *args, **kwargs):
+    def __init__(
+        self, sat_host: str, sat_port: int, dec_port: str, dec_baud: int = 115200
+    ):
         self.flag = None
-        super().__init__(*args, **kwargs)
+        super().__init__(sat_host, sat_port, dec_port, dec_baud)
 
     def decode(self):
         """Serve frames from the queue to the Decoder, printing the decoded results"""
