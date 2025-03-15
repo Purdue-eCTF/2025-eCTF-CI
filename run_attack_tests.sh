@@ -25,14 +25,14 @@ for test in tests/attack/*/*; do
     if [[ $test == */x-*.sh ]] || [[ $test == *.md ]]; then
         continue
     fi
-    scenario=$(basename "$(dirname "$test")")
+    scenario=$(basename "$(dirname "$test")" | cut -d - -f 2)
     echo -e "${C_MEDIUMPURPLE1}${F_BOLD}Running test $test${NO_FORMAT}"
     "$test" 2>&1 | tee temp_output
     if [[ ${PIPESTATUS[0]} -eq 124 ]]; then 
         echo -e "${C_RED}${F_BOLD}Test $test failed because it timed out${NO_FORMAT}"
     fi
 
-    if [[ $scenario != 0-global ]]; then # global tests handle this themselves
+    if [[ $scenario != global ]]; then # global tests handle this themselves
         grep -aEo "[a-z0-9]{16}\^ flag \^" temp_output | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/;s/\^ flag \^$/}/"
     fi
 
