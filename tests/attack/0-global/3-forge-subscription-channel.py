@@ -6,7 +6,7 @@ import sys
 
 from loguru import logger
 
-from attack_utils import LimitedAttackTV, conn, p64, run_attack
+from attack_utils import LimitedAttackTV, conn, p32, run_attack
 
 logger.remove()
 logger.add(sys.stdout, level="INFO")
@@ -14,11 +14,11 @@ logger.add(sys.stdout, level="INFO")
 
 def forge_channel(subscription, channel, new_channel_id):
     channel_id, _, _ = channel
-    offset = subscription.index(p64(channel_id))
+    offset = subscription.index(p32(channel_id))
     print(f"found offset {offset}")
 
     new_subscription = bytearray(subscription)
-    new_subscription[offset : offset + 8] = p64(new_channel_id)
+    new_subscription[offset : offset + 8] = p32(new_channel_id)
 
     return new_subscription
 
@@ -37,7 +37,7 @@ async def main():
         r.subscribe(forge_channel(channel_1_sub, channel_1, 3))
         r.subscribe(forge_channel(channel_1_sub, channel_1, 4))
     except ValueError:
-        print("couldn't find timestamp offset")
+        print("couldn't find channel offset")
         return
 
     for channel, scenario in [(2, "expired"), (3, "pirate"), (4, "nosub")]:
