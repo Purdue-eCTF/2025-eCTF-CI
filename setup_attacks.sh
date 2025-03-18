@@ -11,5 +11,5 @@ export IP CHANNEL_0_PORT CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_
 PYTHONPATH="$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" && pwd)"
 export PYTHONPATH
 
-timeout 15s python -m ectf25.tv.subscribe ../test_out/own.sub /dev/ttyACM0 || exit $?
-timeout 15s python -m ectf25.tv.subscribe ../test_out/expired.sub /dev/ttyACM0 || exit $?
+LOGURU_LEVEL=INFO timeout 15s python -m ectf25.tv.subscribe ../test_out/own.sub /dev/ttyACM0 || exit $?
+LOGURU_LEVEL=INFO timeout 15s python -m ectf25.tv.subscribe ../test_out/expired.sub /dev/ttyACM0 || exit $?
