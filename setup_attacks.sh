@@ -1,8 +1,8 @@
 #!/bin/bash
 echo Setting up attacks
-pip uninstall ectf25_design
+pip uninstall -y ectf25_design
 if [[ ! -f ../test_out/design/setup.py ]]; then
-    pip install -e ../test_out/design/ || pip uninstall ectf25_design
+    pip install -e ../test_out/design/ || pip uninstall -y ectf25_design
 fi
 
 read -r IP CHANNEL_0_PORT CHANNEL_1_PORT CHANNEL_2_PORT CHANNEL_3_PORT CHANNEL_4_PORT < ../test_out/ports.txt
