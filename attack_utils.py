@@ -29,16 +29,32 @@ def p64(i):
     return struct.pack("<Q", i)
 
 
-def match_flag(decoded):
+def match_flag(s):
+    if isinstance(s, str):
+        decoded = s
+    else:
+        decoded = s.decode("utf-8", errors="ignore")
     m = re.search(
         r"([a-fA-F0-9]{16})\^ flag \^",
-        decoded.decode("utf-8", errors="ignore"),
+        decoded,
     )
 
     if m:
         return m.group(1)
     else:
         return None
+
+
+def wrap_flag(s, scenario):
+    if isinstance(s, str):
+        decoded = s
+    else:
+        decoded = s.decode("utf-8", errors="ignore")
+    flag = match_flag(decoded)
+    if flag is None:
+        print(f"Invalid flag {decoded}")
+        return None
+    return f"ectf{{{scenario}_{flag}}}"
 
 
 async def recording_playback():

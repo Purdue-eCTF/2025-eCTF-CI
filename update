@@ -35,11 +35,10 @@ sleep 1
 if [[ -n "$ATTACK_BOARD" ]]; then
   echo "Power cycling board"
   ./power_cycle.sh 1 || exit $?
+else
+  echo "Testing with list"
+  timeout 3s python -m ectf25.tv.list /dev/ttyACM0
 fi
-
-echo "Testing with list"
-
-timeout 3s python -m ectf25.tv.list /dev/ttyACM0
 
 if [ "$?" -ne 0 ]; then
   echo -e "%%FAILED%%\nReason: Listing failed."
