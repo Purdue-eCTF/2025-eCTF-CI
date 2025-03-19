@@ -1,0 +1,3 @@
+[submodule "2025-eCTF-attacks"]
+	path = 2025-eCTF-attacks
+	url = https://github.com/Purdue-eCTF/2025-eCTF-attacks/
