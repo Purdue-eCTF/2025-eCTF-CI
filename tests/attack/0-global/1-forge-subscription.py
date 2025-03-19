@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # forge subscription if the encoder's gen_subscription function doesn't perform any encryption/signing
+import asyncio
 import os
 import sys
 
@@ -31,7 +32,7 @@ async def main():
     ]
 
     for subscription in subscriptions:
-        r.subscribe(subscription)
+        await asyncio.wait_for(asyncio.to_thread(r.subscribe, subscription), 5)
 
     flag = await recording_playback()
     if flag:

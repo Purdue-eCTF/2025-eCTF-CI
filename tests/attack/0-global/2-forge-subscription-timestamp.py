@@ -2,6 +2,7 @@
 # forge subscription timestamp
 # for expired and recording scenarios
 
+import asyncio
 import os
 import sys
 
@@ -40,8 +41,12 @@ async def main():
         channel_2_sub = f.read()
 
     try:
-        r.subscribe(forge_timestamp(channel_1_sub, channel_1))
-        r.subscribe(forge_timestamp(channel_2_sub, channel_2))
+        await asyncio.wait_for(
+            asyncio.to_thread(r.subscribe, forge_timestamp(channel_1_sub, channel_1)), 5
+        )
+        await asyncio.wait_for(
+            asyncio.to_thread(r.subscribe, forge_timestamp(channel_2_sub, channel_2)), 5
+        )
     except ValueError:
         print("couldn't find timestamp offset")
         return

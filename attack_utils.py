@@ -4,6 +4,8 @@ import os
 import re
 import struct
 import sys
+import threading
+import time
 
 from ectf25.tv import TV
 from ectf25.utils.decoder import DecoderIntf
@@ -111,10 +113,13 @@ class LimitedAttackTV(TV):
             raise
 
 
+def _timeout(timeout):
+    time.sleep(timeout)
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os._exit(124)
+
+
 def run_attack(f, timeout: int):
-    try:
-        asyncio.run(asyncio.wait_for(f(), timeout))
-    except TimeoutError:
-        sys.stdout.flush()
-        sys.stderr.flush()
-        os._exit(124)
+    threading.Thread(target=_timeout, args=(timeout,)).start()
+    asyncio.run(f())

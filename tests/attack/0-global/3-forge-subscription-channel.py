@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # for expired, pirate, nosub
 
+import asyncio
 import os
 import sys
 
@@ -33,9 +34,15 @@ async def main():
         channel_1_sub = f.read()
 
     try:
-        r.subscribe(forge_channel(channel_1_sub, channel_1, 2))
-        r.subscribe(forge_channel(channel_1_sub, channel_1, 3))
-        r.subscribe(forge_channel(channel_1_sub, channel_1, 4))
+        await asyncio.wait_for(
+            asyncio.to_thread(r.subscribe, forge_channel(channel_1_sub, channel_1, 2)), 5
+        )
+        await asyncio.wait_for(
+            asyncio.to_thread(r.subscribe, forge_channel(channel_1_sub, channel_1, 3)), 5
+        )
+        await asyncio.wait_for(
+            asyncio.to_thread(r.subscribe, forge_channel(channel_1_sub, channel_1, 4)), 5
+        )
     except ValueError:
         print("couldn't find channel offset")
         return
