@@ -34,7 +34,6 @@ async def main():
         rand_bytes = random.randbytes(append_length)
         new_frame = frame + rand_bytes
         try:
-            print(byte_offset, bit_offset)
             decoded = await asyncio.wait_for(
                 asyncio.to_thread(r.decode, new_frame), 10
             )
