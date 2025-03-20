@@ -1,4 +1,3 @@
-import asyncio
 import json
 import os
 import re
@@ -59,14 +58,14 @@ def wrap_flag(s, scenario):
     return f"ectf{{{scenario}_{flag}}}"
 
 
-async def recording_playback():
+def recording_playback():
     with open("../test_out/recording.json") as f:
         recording = json.load(f)
     r = conn()
 
     for msg in recording[:10]:
         frame = bytearray.fromhex(msg["encoded"])
-        decoded = await asyncio.wait_for(asyncio.to_thread(r.decode, frame), 10)
+        decoded = r.decode(frame)
         if flag := match_flag(decoded):
             return flag
 
@@ -122,4 +121,4 @@ def _timeout(timeout):
 
 def run_attack(f, timeout: int):
     threading.Thread(target=_timeout, args=(timeout,)).start()
-    asyncio.run(f())
+    f()

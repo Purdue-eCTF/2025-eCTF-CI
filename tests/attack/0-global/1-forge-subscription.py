@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 # forge subscription if the encoder's gen_subscription function doesn't perform any encryption/signing
-import asyncio
 import os
 import sys
 
-from ectf25.tv import TV
 from ectf25_design.gen_secrets import gen_secrets
 from ectf25_design.gen_subscription import gen_subscription
 from loguru import logger
@@ -21,7 +19,7 @@ logger.remove()
 logger.add(sys.stdout, level="INFO")
 
 
-async def main():
+def main():
     decoder_id = get_decoder_id()
 
     r = conn()
@@ -32,9 +30,9 @@ async def main():
     ]
 
     for subscription in subscriptions:
-        await asyncio.wait_for(asyncio.to_thread(r.subscribe, subscription), 5)
+        r.subscribe(subscription)
 
-    flag = await recording_playback()
+    flag = recording_playback()
     if flag:
         print(f"POTENTIAL FLAG: ectf{{recording_{flag}}}")
 

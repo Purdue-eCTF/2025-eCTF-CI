@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 # bitflip each bit in the encoded frame and see if decoder crashes or responds with a successful decrypt
 # used to detect teams that don't verify length fields in the frame, etc
-import asyncio
 import json
 import os
 import socket
 import sys
 
-from ectf25.utils.decoder import DecoderIntf
 from loguru import logger
+from serial import SerialTimeoutException
 
 from attack_utils import conn, run_attack
 
@@ -16,7 +15,7 @@ logger.remove()
 logger.add(sys.stdout, level="SUCCESS")
 
 
-async def main():
+def main():
     r = conn()
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((os.environ["IP"], int(os.environ["CHANNEL_1_PORT"])))
@@ -34,10 +33,8 @@ async def main():
             new_frame[byte_offset] ^= 1 << bit_offset
             try:
                 print(byte_offset, bit_offset)
-                decoded = await asyncio.wait_for(
-                    asyncio.to_thread(r.decode, new_frame), 10
-                )
-            except TimeoutError:
+                decoded = r.decode(new_frame)
+            except SerialTimeoutException:
                 # assume decoder crashed
                 print(
                     f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} in encoded frame caused decoder to crash"

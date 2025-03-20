@@ -5,8 +5,8 @@ import asyncio
 import os
 import sys
 
-from ectf25.utils.decoder import DecoderIntf
 from loguru import logger
+from serial import SerialTimeoutException
 
 from attack_utils import conn, run_attack
 
@@ -14,7 +14,7 @@ logger.remove()
 logger.add(sys.stdout, level="SUCCESS")
 
 
-async def main():
+def main():
     r = conn()
 
     with open("../test_out/own.sub", "rb") as f:
@@ -28,11 +28,9 @@ async def main():
             new_subscription[byte_offset] ^= 1 << bit_offset
             try:
                 print(byte_offset, bit_offset)
-                orig_list = await asyncio.wait_for(asyncio.to_thread(r.list), 10)
-                await asyncio.wait_for(
-                    asyncio.to_thread(r.subscribe, new_subscription), 10
-                )
-                new_list = await asyncio.wait_for(asyncio.to_thread(r.list), 10)
+                orig_list = r.list()
+                r.subscribe(new_subscription)
+                new_list = r.list()
                 if new_list != orig_list:
                     if first_vuln:
                         first_vuln = False
@@ -42,7 +40,7 @@ async def main():
                     print(
                         f"Subscribe bitflip details: flipping byte {byte_offset} bit {bit_offset} in subscription results in {new_list}"
                     )
-            except TimeoutError:
+            except SerialTimeoutException:
                 # assume decoder crashed
                 print(
                     f"POTENTIAL VULNERABILITY: flipping byte {byte_offset} bit {bit_offset} in subscription caused decoder to crash"

