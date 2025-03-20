@@ -47,7 +47,7 @@ def main():
                 if first_vuln:
                     first_vuln = False
                     print(
-                        "POTENTIAL VULNERABILITY: flipping bytes in encoded frame results in valid decode, Ctrl-F 'Decode bitflip details' in logs for more detail"
+                        "POTENTIAL VULNERABILITY: flipping bits in encoded frame results in valid decode, Ctrl-F 'Decode bitflip details' in logs for more detail"
                     )
                 print(
                     f"Decode bitflip details: flipping byte {byte_offset} bit {bit_offset} in encoded frame results in {decoded}"

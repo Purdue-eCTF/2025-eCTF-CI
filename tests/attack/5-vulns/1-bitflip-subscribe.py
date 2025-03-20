@@ -35,7 +35,7 @@ def main():
                     if first_vuln:
                         first_vuln = False
                         print(
-                            "POTENTIAL VULNERABILITY: flipping bytes in subscription results in valid subscribe, Ctrl-F 'Subscribe bitflip details' in log for more detail"
+                            "POTENTIAL VULNERABILITY: flipping bits in subscription results in valid subscribe, Ctrl-F 'Subscribe bitflip details' in log for more detail"
                         )
                     print(
                         f"Subscribe bitflip details: flipping byte {byte_offset} bit {bit_offset} in subscription results in {new_list}"

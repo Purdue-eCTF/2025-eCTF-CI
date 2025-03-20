@@ -26,7 +26,7 @@ for test in tests/attack/*/*; do
     fi
 
     if [[ $scenario != global ]]; then # global tests handle this themselves
-        grep -aEo "[a-z0-9]{16}\^ flag \^" temp_output | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/;s/\^ flag \^$/}/"
+        grep -aEo "[a-z0-9]{16}\^ flag \^" temp_output | grep -v noflagonthischan | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/;s/\^ flag \^$/}/"
     fi
 
     if ! timeout 3s python3 -m ectf25.tv.list /dev/ttyACM0 >/dev/null 2>&1; then
