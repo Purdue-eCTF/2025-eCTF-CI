@@ -40,7 +40,7 @@ async def main():
         except TimeoutError:
             # assume decoder crashed
             print(
-                f"POTENTIAL VULNERABILITY: appending {append_length} random bytes ({rand_byes.hex()}) to encoded frame caused decoder to crash"
+                f"POTENTIAL VULNERABILITY: appending {append_length} random bytes ({rand_bytes.hex()}) to encoded frame caused decoder to crash"
             )
             sys.stdout.flush()
             os._exit(0)
@@ -53,7 +53,7 @@ async def main():
                     "POTENTIAL VULNERABILITY: appending random bytes to an encoded frame results in valid decode, Ctrl-F 'Append bytes details' in logs for more detail"
                 )
             print(
-                f"Append bytes details: appending {append_length} random bytes ({rand_byes.hex()}) to encoded frame results in {decoded}"
+                f"Append bytes details: appending {append_length} random bytes ({rand_bytes.hex()}) to encoded frame results in {decoded}"
             )
 
 
