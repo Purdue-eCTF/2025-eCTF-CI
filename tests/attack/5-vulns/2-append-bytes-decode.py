@@ -17,7 +17,7 @@ logger.remove()
 logger.add(sys.stdout, level="SUCCESS")
 
 
-async def main():
+def main():
     r = conn()
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((os.environ["IP"], int(os.environ["CHANNEL_1_PORT"])))
@@ -34,9 +34,7 @@ async def main():
         rand_bytes = random.randbytes(append_length)
         new_frame = frame + rand_bytes
         try:
-            decoded = await asyncio.wait_for(
-                asyncio.to_thread(r.decode, new_frame), 10
-            )
+            decoded = r.decode(new_frame)
         except TimeoutError:
             # assume decoder crashed
             print(
