@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 # add extra bytes on the end of encoded frame and see if team crashes or decodes a valid frame
 # used to detect teams which read as many bytes as possible from uart and don't validate length
-import asyncio
 import json
 import os
 import random
 import socket
 import sys
 
-from ectf25.utils.decoder import DecoderIntf
 from loguru import logger
 
 from attack_utils import conn, run_attack

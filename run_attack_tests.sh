@@ -29,7 +29,7 @@ for test in tests/attack/*/*; do
         grep -aEo "[a-z0-9]{16}\^ flag \^" temp_output | grep -v noflagonthischan | sed "s/^/POTENTIAL FLAG: ectf{${scenario}_/;s/\^ flag \^$/}/"
     fi
 
-    if ! timeout 3s python3 -m ectf25.tv.list /dev/ttyACM0 >/dev/null 2>&1; then
+    if ! timeout 2s python3 -m ectf25.tv.list /dev/ttyACM0 >/dev/null 2>&1; then
         echo "Decoder crashed, rebooting"
         ./power_cycle.sh 1
     fi

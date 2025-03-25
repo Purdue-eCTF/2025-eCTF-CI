@@ -30,6 +30,14 @@ def p64(i):
     return struct.pack("<Q", i)
 
 
+def u32(s):
+    return struct.unpack("<I", s)
+
+
+def u64(s):
+    return struct.unpack("<Q", s)
+
+
 def match_flag(s):
     if isinstance(s, str):
         decoded = s

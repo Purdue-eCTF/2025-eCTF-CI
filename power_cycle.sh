@@ -6,12 +6,12 @@ power_cycle() {
 
 	echo -n "Waiting for USB to connect"
 	while [ ! -e "/dev/disk/by-label/DAPLINK" ]; do
-		if [ "$USB_RETRY_COUNT" -gt  20 ]; then
+        if [ "$USB_RETRY_COUNT" -gt 100 ]; then
 			echo -e "%%FAILED%%\nReason: USB connection timeout"
 			exit 47
 		fi
 		echo -n "."
-		sleep 1
+        sleep 0.2
 		((USB_RETRY_COUNT++))
 	done
 	echo
@@ -21,10 +21,10 @@ if [[ $# -eq 0 ]]; then
 	power_cycle
 else # pass an argument to enable retries
 	POWER_CYCLE_RETRYCOUNT=0
-	while [[ "$POWER_CYCLE_RETRYCOUNT" -le 3 ]];do
+    while [[ "$POWER_CYCLE_RETRYCOUNT" -lt 5 ]];do
 		power_cycle
 		sleep 3
-		if timeout 3s python3 -m ectf25.tv.list /dev/ttyACM0 >/dev/null 2>&1; then
+        if timeout 2s python3 -m ectf25.tv.list /dev/ttyACM0 >/dev/null 2>&1; then
 			exit 0
 		fi
 
