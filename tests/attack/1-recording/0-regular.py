@@ -9,5 +9,11 @@ logger.remove()
 logger.add(sys.stdout, level="INFO")
 
 
+def main():
+    flag = recording_playback()
+    if flag:
+        print(flag)
+
+
 if __name__ == "__main__":
-    run_attack(recording_playback, 30)
+    run_attack(main, 30)
