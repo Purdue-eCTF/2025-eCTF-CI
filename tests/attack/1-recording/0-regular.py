@@ -12,7 +12,7 @@ logger.add(sys.stdout, level="INFO")
 def main():
     flag = recording_playback()
     if flag:
-        print(f"POTENTIAL FLAG: ectf{{recorded_{flag}}}")
+        print(f"POTENTIAL FLAG: ectf{{recording_{flag}}}")
 
 
 if __name__ == "__main__":
